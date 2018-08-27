@@ -4,10 +4,10 @@ var fs = require('fs');
 var request = require('request');
 
 var rootFolder = path.resolve('.');
-var zipPath = path.resolve(rootFolder, '../bot-test-lucio.zip');
-var kuduApi = 'https://bot-test-lucio.scm.azurewebsites.net/api/zip/site/wwwroot';
-var userName = '$bot-test-lucio';
-var password = 'kMGfQmkexbyHKcX7nDywb9jZhnl2gJggt68n1zM1H9BDg8037acBTerolFhP';
+var zipPath = path.resolve(rootFolder, '../bot-tets-lucio02.zip');
+var kuduApi = 'https://bot-tets-lucio02.scm.azurewebsites.net/api/zip/site/wwwroot';
+var userName = '$bot-tets-lucio02';
+var password = 'weiTNF7qXbS6aqGB20HA0sGuiC8Gc4fhsm1HMRhHzxlbkniwTpRs2oN22jZa';
 
 function uploadZip(callback) {
   fs.createReadStream(zipPath).pipe(request.put(kuduApi, {
@@ -45,8 +45,8 @@ function publish(callback) {
 
 publish(function(err) {
   if (!err) {
-    console.log('bot-test-lucio publish');
+    console.log('bot-tets-lucio02 publish');
   } else {
-    console.error('failed to publish bot-test-lucio', err);
+    console.error('failed to publish bot-tets-lucio02', err);
   }
 });

@@ -1,14 +1,8 @@
 {
-  "name": "hello-chatconnector",
+  "name": "luisbot",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "azure-publish": "node publish.js"
-  },
-  "author": "",
-  "license": "ISC",
+  "main": "index.js",
   "dependencies": {
     "botbuilder": "^3.13.1",
     "botbuilder-azure": "^3.0.4",
@@ -17,5 +11,10 @@
   "devDependencies": {
     "request": "^2.81.0",
     "zip-folder": "^1.0.0"
-  }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
 }
