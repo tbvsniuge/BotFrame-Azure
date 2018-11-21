@@ -68,8 +68,9 @@ bot.dialog('CreateNote', [
         // Prompt for title
         if (!note.title) {
             let words = 'AppId:' + process.env.MicrosoftAppId + ';AppPW:' + process.env.MicrosoftAppPassword;
-            builder.Prompts.text(words);
-            //builder.Prompts.text(session, 'What would you like to call your note?');
+            //builder.Prompts.text(words);
+            console.log(words);
+            builder.Prompts.text(session, 'What would you like to call your note?');
         } else {
             next();
         }
@@ -83,8 +84,9 @@ bot.dialog('CreateNote', [
         // Prompt for the text of the note
         if (!note.text) {
             let words = 'BotOpenIdMetadata:' + process.env.BotOpenIdMetadata;
-            builder.Prompts.text(words);
-            //builder.Prompts.text(session, 'What would you like to say in your note?');
+            //builder.Prompts.text(words);
+            console.log(words);
+            builder.Prompts.text(session, 'What would you like to say in your note?');
         } else {
             next();
         }
@@ -105,9 +107,10 @@ bot.dialog('CreateNote', [
 
         // Send confirmation to user
         let words = 'LuisModelUrl' + LuisModelUrl;
-        session.endDialog(words);
-        //session.endDialog('Creating note named "%s" with text "%s"',
-        //note.title, note.text);
+        //session.endDialog(words);
+        console.log(words);
+        session.endDialog('Creating note named "%s" with text "%s"',
+            note.title, note.text);
     }
 ]).triggerAction({
     matches: 'Note.Create',
