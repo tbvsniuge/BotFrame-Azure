@@ -5,14 +5,14 @@ var botbuilder_azure = require("botbuilder-azure");
 // Setup Restify Server
 var server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {
-   console.log('%s listening to %s', server.name, server.url); 
+    console.log('%s listening to %s', server.name, server.url);
 });
-  
+
 // Create chat connector for communicating with the Bot Framework Service
 var connector = new builder.ChatConnector({
     appId: process.env.MicrosoftAppId,
     appPassword: process.env.MicrosoftAppPassword,
-    openIdMetadata: process.env.BotOpenIdMetadata 
+    openIdMetadata: process.env.BotOpenIdMetadata
 });
 
 // Listen for messages from users 
@@ -34,11 +34,11 @@ var tableStorage = new botbuilder_azure.AzureBotStorage({ gzipData: false }, azu
 var bot = new builder.UniversalBot(connector, function (session, args) {
     session.send("Hi... I'm the note bot sample. I can create new notes, read saved notes to you and delete notes.");
 
-   // If the object for storing notes in session.userData doesn't exist yet, initialize it
-   if (!session.userData.notes) {
-       session.userData.notes = {};
-       console.log("initializing userData.notes in default message handler");
-   }
+    // If the object for storing notes in session.userData doesn't exist yet, initialize it
+    if (!session.userData.notes) {
+        session.userData.notes = {};
+        console.log("initializing userData.notes in default message handler");
+    }
 });
 
 bot.set('storage', tableStorage);
@@ -62,12 +62,14 @@ bot.dialog('CreateNote', [
         var title = builder.EntityRecognizer.findEntity(intent.entities, 'Note.Title');
 
         var note = session.dialogData.note = {
-          title: title ? title.entity : null,
+            title: title ? title.entity : null,
         };
-        
+
         // Prompt for title
         if (!note.title) {
-            builder.Prompts.text(session, 'What would you like to call your note?');
+            let words = 'AppId:' + process.env.MicrosoftAppId + ';AppPW:' + process.env.MicrosoftAppPassword;
+            builder.Prompts.text(words);
+            //builder.Prompts.text(session, 'What would you like to call your note?');
         } else {
             next();
         }
@@ -80,7 +82,9 @@ bot.dialog('CreateNote', [
 
         // Prompt for the text of the note
         if (!note.text) {
-            builder.Prompts.text(session, 'What would you like to say in your note?');
+            let words = 'BotOpenIdMetadata:' + process.env.BotOpenIdMetadata;
+            builder.Prompts.text(words);
+            //builder.Prompts.text(session, 'What would you like to say in your note?');
         } else {
             next();
         }
@@ -90,7 +94,7 @@ bot.dialog('CreateNote', [
         if (results.response) {
             note.text = results.response;
         }
-        
+
         // If the object for storing notes in session.userData doesn't exist yet, initialize it
         if (!session.userData.notes) {
             session.userData.notes = {};
@@ -100,12 +104,14 @@ bot.dialog('CreateNote', [
         session.userData.notes[note.title] = note;
 
         // Send confirmation to user
-        session.endDialog('Creating note named "%s" with text "%s"',
-            note.title, note.text);
+        let words = 'LuisModelUrl' + LuisModelUrl;
+        session.endDialog(words);
+        //session.endDialog('Creating note named "%s" with text "%s"',
+        //note.title, note.text);
     }
-]).triggerAction({ 
+]).triggerAction({
     matches: 'Note.Create',
-    confirmPrompt: "This will cancel the creation of the note you started. Are you sure?" 
+    confirmPrompt: "This will cancel the creation of the note you started. Are you sure?"
 }).cancelAction('cancelCreateNote', "Note canceled.", {
     matches: /^(cancel|nevermind)/i,
     confirmPrompt: "Are you sure?"
@@ -123,7 +129,7 @@ bot.dialog('DeleteNote', [
                 // Verify that the title is in our set of notes.
                 title = builder.EntityRecognizer.findBestMatch(session.userData.notes, entity.entity);
             }
-            
+
             // Prompt for note name
             if (!title) {
                 builder.Prompts.choice(session, 'Which note would you like to delete?', session.userData.notes);
@@ -135,7 +141,7 @@ bot.dialog('DeleteNote', [
         }
     },
     function (session, results) {
-        delete session.userData.notes[results.response.entity];        
+        delete session.userData.notes[results.response.entity];
         session.endDialog("Deleted the '%s' note.", results.response.entity);
     }
 ]).triggerAction({
@@ -149,7 +155,7 @@ bot.dialog('DeleteNote', [
 bot.dialog('ReadNote', [
     function (session, args, next) {
         if (noteCount(session.userData.notes) > 0) {
-           
+
             // Resolve and store any Note.Title entity passed from LUIS.
             var title;
             var intent = args.intent;
@@ -158,7 +164,7 @@ bot.dialog('ReadNote', [
                 // Verify it's in our set of notes.
                 title = builder.EntityRecognizer.findBestMatch(session.userData.notes, entity.entity);
             }
-            
+
             // Prompt for note name
             if (!title) {
                 builder.Prompts.choice(session, 'Which note would you like to read?', session.userData.notes);
@@ -169,7 +175,7 @@ bot.dialog('ReadNote', [
             session.endDialog("No notes to read.");
         }
     },
-    function (session, results) {        
+    function (session, results) {
         session.endDialog("Here's the '%s' note: '%s'.", results.response.entity, session.userData.notes[results.response.entity].text);
     }
 ]).triggerAction({
