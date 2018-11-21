@@ -76,7 +76,7 @@ bot.dialog('CreateNote', [
         if (!note.title) {
             //let words = 'AppId:' + appId + ';AppPW:' + appPassword;
             let words = '123';
-            builder.Prompts.text(session, words);
+            builder.Prompts.text(session, '123');
             //console.log(words);
             //builder.Prompts.text(session, 'What would you like to call your note?');
         } else {
