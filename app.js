@@ -74,8 +74,8 @@ bot.dialog('CreateNote', [
 
         // Prompt for title
         if (!note.title) {
-            //let words = 'AppId:' + appId + ';AppPW:' + appPassword;
-            let words = '123456';
+            let words = 'AppId:' + appId + ';AppPW:' + appPassword;
+            //let words = '123456';
             session.send(words);
             //words之类的不能放入下面的公式 TODO
             builder.Prompts.text(session, '123');
@@ -94,7 +94,8 @@ bot.dialog('CreateNote', [
         // Prompt for the text of the note
         if (!note.text) {
             let words = 'BotOpenIdMetadata:' + process.env.BotOpenIdMetadata;
-            builder.Prompts.text(session, words);
+            session.send(words);
+            //builder.Prompts.text(session, words);
             //console.log(words);
             builder.Prompts.text(session, 'What would you like to say in your note?');
         } else {
@@ -117,7 +118,8 @@ bot.dialog('CreateNote', [
 
         // Send confirmation to user
         let words = 'LuisModelUrl' + LuisModelUrl;
-        session.endDialog(words);
+        session.send(words);
+        //session.endDialog(words);
         //console.log(words);
         session.endDialog('Creating note named "%s" with text "%s"',
             note.title, note.text);
