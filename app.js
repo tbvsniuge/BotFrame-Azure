@@ -15,6 +15,8 @@ var connector = new builder.ChatConnector({
     openIdMetadata: process.env.BotOpenIdMetadata
 });
 
+
+
 // Listen for messages from users 
 server.post('/api/messages', connector.listen());
 
@@ -54,6 +56,11 @@ const LuisModelUrl = 'https://' + luisAPIHostName + '/luis/v2.0/apps/' + luisApp
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
 bot.recognizer(recognizer);
 
+
+var appId = process.env.MicrosoftAppId;
+var appPassword = process.env.MicrosoftAppPassword;
+var openIdMetadata = process.env.BotOpenIdMetadata;
+
 // CreateNote dialog
 bot.dialog('CreateNote', [
     function (session, args, next) {
@@ -67,10 +74,10 @@ bot.dialog('CreateNote', [
 
         // Prompt for title
         if (!note.title) {
-            let words = 'AppId:' + process.env.MicrosoftAppId + ';AppPW:' + process.env.MicrosoftAppPassword;
-            //builder.Prompts.text(words);
-            console.log(words);
-            builder.Prompts.text(session, 'What would you like to call your note?');
+            let words = 'AppId:' + appId + ';AppPW:' + appPassword;
+            builder.Prompts.text(words);
+            //console.log(words);
+            //builder.Prompts.text(session, 'What would you like to call your note?');
         } else {
             next();
         }
