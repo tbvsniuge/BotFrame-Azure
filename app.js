@@ -75,7 +75,9 @@ bot.dialog('CreateNote', [
         // Prompt for title
         if (!note.title) {
             //let words = 'AppId:' + appId + ';AppPW:' + appPassword;
-            let words = '123';
+            let words = '123456';
+            session.send(words);
+            //words之类的不能放入下面的公式 TODO
             builder.Prompts.text(session, '123');
             //console.log(words);
             //builder.Prompts.text(session, 'What would you like to call your note?');
